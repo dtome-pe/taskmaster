@@ -1,13 +1,23 @@
 import cmd
 import readline
 from HTTPComm import HTTPComm
+from Config import Config
 
 class ControlShell(cmd.Cmd):
 
-    #We inherit from Cmd class, and then set custom prompt and commands for printing when typing "??
-    def __init__(self, http_comm : HTTPComm):
+
+    def __init__(self):
+        """We inherit from Cmd class"""
         super().__init__()
-        self.http_comm = http_comm
+
+        """instantiate a httpcomm class, with port stored in config class"""
+        self.http_comm : HTTPComm = HTTPComm(Config.port)
+
+        """If test get request failed, exit"""
+        if self.http_comm.http_status == 'KO':
+            return
+        
+        """Set custom prompt and commands for printing when typing help command (?)"""
         self.prompt = 'taskmaster_client>'
         self.commands = {"start [name of process]": "start a process",
             "stop [name of process]": "stop a process",
@@ -17,15 +27,15 @@ class ControlShell(cmd.Cmd):
             "exit": "exit taskmaster client"}
 
     def run(self):
-        #interactive prompt loop
+        """sets interactive prompt loop"""
         self.cmdloop()
 
     def do_help(self, arg):
-        #print commands if only "?"
+        """Print all commands if only ? with no extra argument"""
         if not arg:
-            for cmd, desc in self.commands:
+            for cmd, desc in self.commands.items():
                 print(f"{cmd:<30} {desc}")
-        #to be implemented printing only the command specified, e.g -> ? start
+        """printing only the command specified, e.g -> ? start, to be implemented"""
 
     #Methos handlers for all available commands, but all of them call same send method of httpcomm class
 

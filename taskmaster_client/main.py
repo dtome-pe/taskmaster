@@ -1,4 +1,4 @@
-from TaskmasterClient import TaskmasterClient
+from ControlShell import ControlShell
 import sys
 
 def main():
@@ -6,7 +6,7 @@ def main():
         print("Wrong number of arguments")
         sys.exit(1)
 
-    task_client : TaskmasterClient = TaskmasterClient(sys.argv[1])
+    ControlShell().run()
 
 
 if __name__ == "__main__":
