@@ -10,21 +10,27 @@ class ControlShell(cmd.Cmd):
         """We inherit from Cmd class"""
         super().__init__()
 
-        """instantiate a httpcomm class, with port stored in config class"""
-        self.http_comm : HTTPComm = HTTPComm(Config.port)
+        """flag for checking correctness of http connection"""
+        self.status = "OK"
 
-        """If test get request failed, exit"""
+        """instantiate a httpcomm class, with port stored in config class"""
+        self.http_comm : HTTPComm = HTTPComm(Config.url)
+
+        """If test get request failed, set flag and return"""
         if self.http_comm.http_status == 'KO':
+            self.status = 'KO'
             return
-        
+
         """Set custom prompt and commands for printing when typing help command (?)"""
         self.prompt = 'taskmaster_client>'
-        self.commands = {"start [name of process]": "start a process",
+        self.commands = {
+            "start [name of process]": "start a process",
             "stop [name of process]": "stop a process",
             "restart [name of process]": "restart a process",
             "reload": "stop all processes, reload configuration file and start the new processes",
             "status": "check status of programs described in config file",
-            "exit": "exit taskmaster client"}
+            "exit": "exit taskmaster client"
+            }
 
     def run(self):
         """sets interactive prompt loop"""

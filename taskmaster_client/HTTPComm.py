@@ -5,10 +5,10 @@ from requests.exceptions import RequestException
 
 class HTTPComm:
 
-    def __init__(self, port):
+    def __init__(self, url):
 
         """ip and port configuration i believe it will have to be parsed from config file"""
-        self.url = f'http://localhost:{port}/'
+        self.url = url
 
         """We try one get request at startup to check server is up"""
         try:
